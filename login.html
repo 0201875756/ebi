@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ورود | MH</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --text: #f4f5ff;
+  --muted: #a7b0cf;
+  --line: #a4aeff2e;
+  --a: #7c6cff;
+  --b: #28c5ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: Tahoma, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 15% 15%, #29205b 0, transparent 38%),
+    radial-gradient(ellipse at 85% 80%, #073d58 0, transparent 35%),
+    #080d1c;
+}
+
+.card {
+  width: min(100%, 430px);
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 25px;
+  background: #131b35e8;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 25px 80px #0007;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--a), var(--b));
+}
+
+.logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--a), var(--b));
+  margin-bottom: 25px;
+}
+
+h1 {
+  font-size: 25px;
+  margin: 0 0 10px;
+}
+
+p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0 0 25px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin: 0 0 9px;
+  color: #dce2ff;
+}
+
+input {
+  width: 100%;
+  padding: 15px 14px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #0b1227;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  direction: ltr;
+  text-align: left;
+}
+
+input:focus {
+  border-color: #8274ff;
+  box-shadow: 0 0 0 3px #8274ff22;
+}
+
+.field {
+  margin-bottom: 17px;
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 13px;
+  padding: 15px;
+  font: inherit;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(100deg, var(--a), #4c8cf6, var(--b));
+  margin-top: 3px;
+}
+
+.note {
+  display: none;
+  margin-top: 16px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #182747;
+  border: 1px solid #355b8b;
+  color: #d8eaff;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.note.show {
+  display: block;
+}
+
+.code {
+  font-size: 20px;
+  letter-spacing: 7px;
+  font-weight: bold;
+  color: #9deaff;
+  direction: ltr;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.status {
+  min-height: 24px;
+  color: #a9d8ff;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.back {
+  background: transparent;
+  border: 1px solid var(--line);
+  margin-top: 10px;
+  display: none;
+}
+
+.back.show {
+  display: block;
+}
+
+.foot {
+  text-align: center;
+  margin: 24px 0 0;
+  font-size: 11px;
+  color: #7885aa;
+}
+</style>
+</head>
+
+<body>
+
+<main class="card">
+
+  <div class="logo">MH</div>
+
+  <h1 id="title">خوش اومدی 👋</h1>
+
+  <p id="subtitle">
+    برای ورود، ایمیلت رو وارد کن تا کد ورود آزمایشی نمایش داده بشه.
+  </p>
+
+  <!-- فرم ایمیل -->
+  <form id="emailForm">
+
+    <div class="field">
+      <label for="email">آدرس ایمیل</label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="name@example.com"
+        autocomplete="email"
+        required
+      >
+    </div>
+
+    <button type="submit">دریافت کد ورود</button>
+
+  </form>
+
+  <!-- فرم کد تایید -->
+  <form id="codeForm" hidden>
+
+    <div class="field">
+      <label for="otp">کد ۶ رقمی</label>
+
+      <input
+        id="otp"
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        pattern="[0-9]{6}"
+        placeholder="••••••"
+        autocomplete="one-time-code"
+        required
+      >
+    </div>
+
+    <button type="submit">ورود به سایت</button>
+
+    <button class="back" id="backBtn" type="button">
+      تغییر ایمیل
+    </button>
+
+  </form>
+
+  <!-- نمایش کد آزمایشی -->
+  <div class="note" id="demoNote" role="status">
+    این ورود نمایشی است و ایمیلی ارسال نشده.
+    کد آزمایشی:
+
+    <div class="code">123456</div>
+  </div>
+
+  <div class="status" id="status" aria-live="polite"></div>
+
+  <div class="foot">
+    MH •ورود نمایشی — بدون ارسال ایمیل و احراز هویت واقعی
+  </div>
+
+</main>
+
+<script>
+const emailForm = document.getElementById('emailForm');
+const codeForm = document.getElementById('codeForm');
+
+const emailInput = document.getElementById('email');
+const otpInput = document.getElementById('otp');
+
+const note = document.getElementById('demoNote');
+const status = document.getElementById('status');
+const back = document.getElementById('backBtn');
+
+// رفتن به مرحله واردکردن کد
+emailForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (!emailInput.reportValidity()) return;
+
+  emailForm.hidden = true;
+  codeForm.hidden = false;
+
+  back.classList.add('show');
+  note.classList.add('show');
+
+  document.getElementById('title').textContent =
+    'کدت آماده‌ست ✨';
+
+  document.getElementById('subtitle').textContent =
+    'در نسخه نمایشی، کد همین‌جا نشان داده می‌شود؛ ایمیلی ارسال نمی‌شود.';
+
+  status.textContent = 'کد آزمایشی را وارد کن.';
+
+  otpInput.focus();
+});
+
+// بررسی کد
+codeForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (otpInput.value === '123456') {
+
+    document.getElementById('title').textContent =
+      'با موفقیت وارد شدی! 🎉';
+
+    document.getElementById('subtitle').textContent =
+      'این فقط نمایش موفقیت ورود است؛ حساب واقعی ساخته یا تأیید نشده.';
+
+    codeForm.hidden = true;
+    note.classList.remove('show');
+
+    status.textContent =
+      'ورود نمایشی با موفقیت انجام شد.';
+
+  } else {
+
+    status.textContent =
+      'کد درست نیست. کد آزمایشی: 123456';
+
+    otpInput.focus();
+  }
+});
+
+// برگشت و تغییر ایمیل
+back.addEventListener('click', () => {
+
+  codeForm.hidden = true;
+  emailForm.hidden = false;
+
+  note.classList.remove('show');
+  status.textContent = '';
+
+  document.getElementById('title').textContent =
+    'خوش اومدی 👋';
+
+  document.getElementById('subtitle').textContent =
+    'برای ورود، ایمیلت رو وارد کن تا کد ورود آزمایشی نمایش داده بشه.';
+});
+</script>
+
+</body>
+</html>
